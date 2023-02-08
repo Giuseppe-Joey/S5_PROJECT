@@ -19,6 +19,6 @@ hold on
 plot(hvl,v,'DisplayName','lin')
 xlabel('t(s)')
 ylabel('v(m/s)')
-title('Vitesse du participant en fonction de sa position')
+title('Vitesse du participant en fonction de sa position modification pour github')
 legend
 
