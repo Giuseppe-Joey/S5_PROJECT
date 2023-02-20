@@ -10,6 +10,8 @@ v = 0.1:0.1:14;
 hv = (g*(1-kf)./v)-(b.*v./m);
 hv0 = (g*(1-kf)./v0)-(b.*v0./m)
 hvl = (g*(1-kf)./v0)-(b.*v0./m)+((g*(kf-1)./(v0.^2))-(b./m)).*(v-v0);
+hv4 = (g*(1-kf)./v0)-(b.*v0./m)+((g*(kf-1)./(v0.^2))-(b./m)).*(v-v0);
+
 
 figure('Name','Vitesse m/s');
 plot(hv,v,'DisplayName','non lin')
