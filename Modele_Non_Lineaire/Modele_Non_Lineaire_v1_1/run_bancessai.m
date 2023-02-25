@@ -17,7 +17,7 @@ t_des     = [0:1:40]';
 % x_des     = [t_des, [0 0 0.5 1  0 -1 0 1 0]'*0.05];
 % y_des     = [t_des, [0 0 0 0 -1  0 1 0 0]'*0.05];
 % z_des     = [t_des, [1 1 1 1  1  1 1 1 1]'*.015];
-% tfin = 50;
+tfin = 50;
 
 %% Initialisation
 bancEssaiConstantes
@@ -33,9 +33,9 @@ VC = [t_des, (linspace(0, Vmax, length(t_des)))'];
 %iniCTL_ver4    %Calculez vos compensateurs ici
 
 %% Simulation
-% open_system('DYNctl_ver4_etud_obfusc')
-% set_param('DYNctl_ver4_etud_obfusc','AlgebraicLoopSolver','LineSearch')
-% sim('DYNctl_ver4_etud_obfusc')
+open_system('simulink_non_lineaire')
+set_param('simulink_non_lineaire','AlgebraicLoopSolver','LineSearch')
+sim('simulink_non_lineaire')
 
 %affichage
 %trajectoires
