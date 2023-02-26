@@ -24,9 +24,9 @@ bancEssaiConstantes
 %bancessai_ini  %faites tous vos calculs de modele ici
 
 %% Vecteurs de tensions simulées
-VA = [t_des, (linspace(0, Vmax, length(t_des)))'];
-VB = [t_des, (linspace(0, Vmax, length(t_des)))'];
-VC = [t_des, (linspace(0, Vmax, length(t_des)))'];
+VA = [t_des, (linspace(0, -Vmax, length(t_des)))'];
+VB = [t_des, (linspace(0, -Vmax, length(t_des)))'];
+VC = [t_des, (linspace(0, -Vmax, length(t_des)))'];
 
 
 %% Calcul des compensateurs
