@@ -80,6 +80,7 @@ Vmax = 16.0;
 % Données mises à jour le 10 juillet 2015
 RR = 3.6;
 LL = .115;
+
 RA =  RR;
 LA =  LL;
 RB =  RR;
