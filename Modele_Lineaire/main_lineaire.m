@@ -22,8 +22,12 @@ t_des     = [0:1:40]';
 tfin = 50;
 
 % Initialisation
-bancEssaiConstantes
-%bancessai_ini  %faites tous vos calculs de modele ici
+constantes_lineaire % call le fichier des constantes
+
+% Modele d'états
+
+A = 
+
 
 % Vecteurs de tensions simulées
 VA = [t_des, (linspace(0, -Vmax, length(t_des)))'];
@@ -35,9 +39,9 @@ VC = [t_des, (linspace(0, -Vmax, length(t_des)))'];
 %iniCTL_ver4    %Calculez vos compensateurs ici
 
 %% Simulation
-open_system('simulink_non_lineaire')
-set_param('simulink_non_lineaire','AlgebraicLoopSolver','LineSearch')
-sim('simulink_non_lineaire')
+open_system('modele_lineaire')
+set_param('modele_lineaire','AlgebraicLoopSolver','LineSearch')
+sim('modele_lineaire')
 
 %affichage
 %trajectoires
