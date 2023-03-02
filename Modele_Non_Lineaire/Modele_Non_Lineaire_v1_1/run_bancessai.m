@@ -35,9 +35,9 @@ VC = [t_des, (linspace(0, -Vmax, length(t_des)))'];
 %iniCTL_ver4    %Calculez vos compensateurs ici
 
 %% Simulation
-open_system('simulink_non_lineaire')
-set_param('simulink_non_lineaire','AlgebraicLoopSolver','LineSearch')
-sim('simulink_non_lineaire')
+open_system('modele_non_lineaire')
+set_param('modele_non_lineaire','AlgebraicLoopSolver','LineSearch')
+sim('modele_non_lineaire')
 
 %affichage
 %trajectoires
