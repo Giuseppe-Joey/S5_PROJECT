@@ -41,46 +41,108 @@ VC_eq = -2.3; %[V]
 %iniCTL_ver4    %Calculez vos compensateurs ici
 
 
-%% Linéarisation de phi_dot_dot (équation de delta phi_dot_dot)
+%% Linéarisation
 % Constantes à l'équilibre 
 ib_eq = VB_eq/RB;
 ic_eq = VC_eq/RC;
 z_eq = Pzeq;        %Pzeq est une variable globale declaree plus haut
 
-% Dérivées partielles
-% 1. section derivee de phi double dot par rapport a ic
-den = Jx*abs(ic_eq)*(ae0 + ae1*z_eq + ae2*z_eq^2 + ae3*z_eq^3);
-del_phi2dot_del_ic = (YB*((2*ic_eq)^2 + be1*abs(ic_eq)))/den;
+% Parties utilisées souvents dans les dérivées partielles
+den_fe = ae0 + ae1*z_eq + ae2*z_eq^2 + ae3*z_eq^3;
+diff_den_fe = ae1 + 2*ae2*z_eq + 3*ae3*z_eq^2;
 
-% 2. section derivee de phi double dot par rapport a ib
-den = Jx*abs(ib_eq)*(ae0+ae1*z_eq+ae2*z_eq^2+ae3*z_eq^3);
-del_phi2dot_del_ib = -(YB*((2*ib_eq)^2 + be1*abs(ib_eq)))/den;
+den_fs = as0 + as1*z_eq + as2*z_eq^2 + as3*z_eq^3;
+diff_den_fs = as1 + 2*as2*z_eq + 3*as3*z_eq^2;
+
+num_fe_b = ib_eq*abs(ib_eq) + be1*ib_eq;
+diff_num_fe_b = (2*ib_eq^2 + be1*abs(ib_eq)) / abs(ib_eq);
+
+num_fe_c = ic_eq*abs(ic_eq) + be1*ic_eq;
+diff_num_fe_c = (2*ic_eq^2 + be1*abs(ic_eq)) / abs(ic_eq);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                  Dérivées partielles delta z_dot_dot                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. Derivee de z double dot par rapport a ic
+z2dot_ic = 0;
+
+% 2. Derivee de z double dot par rapport a ib
+z2dot_ib = 0;
+
+% 3. Derivee de z double dot par rapport a z
+z2dot_z = 0;
+
+% 4. Derivee de z double dot par rapport a phi
+z2dot_phi = 0;
+        
+% 5. Derivee de z double dot par rapport a theta
+z2dot_theta = 0;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                  Dérivées partielles delta phi_dot_dot                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. Derivee de phi double dot par rapport a ic
+phi2dot_ic = (YB/Jx) * (diff_num_fe_c) * (1/diff_den_fe);
+
+% 2. Derivee de phi double dot par rapport a ib
+phi2dot_ib = (-YB/Jx) * (diff_num_fe_b) * (1/diff_den_fe);
+
+% 3. Derivee de phi double dot par rapport a z
+phi2dot_z = (YB/Jx) * ((diff_den_fe * (num_fe_b - num_fe_c))/ (den_fe^2));
+
+% 4. Derivee de phi double dot par rapport a phi
+phi2dot_phi = (YB/Jx)*( ...
+              ((diff_den_fe*(YB*num_fe_b - YC*num_fe_c))/(den_fe^2)) + ...
+               ((diff_den_fs*(YC-YB)) / (den_fs^2))    );
+        
+% 5. Derivee de phi double dot par rapport a theta
+phi2dot_theta = (YB/Jx)*( ...
+              ((diff_den_fe*(XC*num_fe_b - XB*num_fe_c))/(den_fe^2)) + ...
+               ((diff_den_fs*(XB-XC)) / (den_fs^2))    );
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Dérivées partielles delta theta_dot_dot                  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% 1. Derivee de theta double dot par rapport a ic
+theta2dot_ic = (XB/Jy) * (diff_num_fe_c) * (1/diff_den_fe);
+
+% 2. Derivee de theta double dot par rapport a ib
+theta2dot_ib = (XB/Jy) * (diff_num_fe_b) * (1/diff_den_fe);
+
+% 3. Derivee de theta double dot par rapport a z
+theta2dot_z = (XB/Jy) * ( ...
+              ((diff_den_fe *(-num_fe_b - num_fe_c))/(den_fe^2)) + ...
+              ( (2*diff_den_fs)/(den_fs^2) ) );
+
+% 4. Derivee de theta double dot par rapport a phi
+theta2dot_phi = (XB/Jy)*(...
+               ((diff_den_fe*(XB*num_fe_b + XC*num_fe_c)) /(den_fe^2) + ...
+               (diff_den_fs*(-XB-XC))/ (den_fs^2) ) );
+        
+% 5. Derivee de theta double dot par rapport a theta
+theta2dot_theta = (XB/Jy)*(...
+               ((diff_den_fe*(-YB*num_fe_b - XC*num_fe_c)) /(den_fe^2)+ ...
+               (diff_den_fs*(YB+YC))/ (den_fs^2) ) );
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                            MATRICES D'ÉTATS                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% 3. section derivee de phi double dot par rapport a z
-den = Jx*(ae0 + ae1*z_eq + ae2*z_eq^2 + ae3*z_eq^3)^2;
-del_phi2dot_del_z = ((ae1 + 2*ae2*z_eq + 3*ae3*z_eq^2)*...
-    (be1*(ib_eq-ic_eq) - ic_eq*abs(ic_eq) + ib_eq*abs(ib_eq))) / den;
 
 
-% 4. section derivee de phi double dot par rapport a phi
-num1 = (ae1 + 2*ae2*z_eq+ 3*ae3*z_eq^2)...
-    *(YB*(ib_eq*abs(ib_eq)) - YC*(ic_eq*abs(ic_eq)+be1*ic_eq));
-den1 = (ae0 + ae1*z_eq + ae2*z_eq^2 + ae3*z_eq^3)^2;
-num2 = (ae1 + 2*ae2*z_eq+ 3*ae3*z_eq^2)*(YC-YB);
-den2 = (as0 + as1*z_eq + as2*z_eq^2 + as3*z_eq^3)^2;
 
-del_phi2dot_del_phi = (YB/Jx)*(num1/den1 + num2/den2);
 
-% 5. section derivee de phi double dot par rapport a theta
-num1 = (ae1 + 2*ae2*z_eq+ 3*ae3*z_eq^2)...
-    *(-XB*(ib_eq*abs(ib_eq)) + XC*(ic_eq*abs(ic_eq)+be1*ic_eq));
-den1 = (ae0 + ae1*z_eq + ae2*z_eq^2 + ae3*z_eq^3)^2;
-num2 = (ae1 + 2*ae2*z_eq+ 3*ae3*z_eq^2)*(XB-XC);
-den2 = (as0 + as1*z_eq + as2*z_eq^2 + as3*z_eq^3)^2;
-del_phi2dot_del_theta = (XB/Jy)*(num1/den1 + num2/den2);
 
-%% Linéarisation de theta_dot_dot (équation de delta theta_dot_dot)
+
+
+
+
+
+
 
 
 %% Simulation
