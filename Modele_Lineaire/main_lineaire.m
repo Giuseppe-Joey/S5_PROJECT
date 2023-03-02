@@ -64,19 +64,19 @@ diff_num_fe_c = (2*ic_eq^2 + be1*abs(ic_eq)) / abs(ic_eq);
 %                  Dérivées partielles delta z_dot_dot                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% 1. Derivee de z double dot par rapport a ic
+% 13. Derivee de z double dot par rapport a ic
 z2dot_ic = 0;
 
-% 2. Derivee de z double dot par rapport a ib
+% 14. Derivee de z double dot par rapport a ib
 z2dot_ib = 0;
 
-% 3. Derivee de z double dot par rapport a z
+% 15. Derivee de z double dot par rapport a z
 z2dot_z = 0;
 
-% 4. Derivee de z double dot par rapport a phi
+% 16. Derivee de z double dot par rapport a phi
 z2dot_phi = 0;
         
-% 5. Derivee de z double dot par rapport a theta
+% 17. Derivee de z double dot par rapport a theta
 z2dot_theta = 0;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,23 +106,23 @@ phi2dot_theta = (YB/Jx)*( ...
 %                Dérivées partielles delta theta_dot_dot                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% 1. Derivee de theta double dot par rapport a ic
+% 6. Derivee de theta double dot par rapport a ic
 theta2dot_ic = (XB/Jy) * (diff_num_fe_c) * (1/diff_den_fe);
 
-% 2. Derivee de theta double dot par rapport a ib
+% 7. Derivee de theta double dot par rapport a ib
 theta2dot_ib = (XB/Jy) * (diff_num_fe_b) * (1/diff_den_fe);
 
-% 3. Derivee de theta double dot par rapport a z
+% 8. Derivee de theta double dot par rapport a z
 theta2dot_z = (XB/Jy) * ( ...
               ((diff_den_fe *(-num_fe_b - num_fe_c))/(den_fe^2)) + ...
               ( (2*diff_den_fs)/(den_fs^2) ) );
 
-% 4. Derivee de theta double dot par rapport a phi
+% 9. Derivee de theta double dot par rapport a phi
 theta2dot_phi = (XB/Jy)*(...
                ((diff_den_fe*(XB*num_fe_b + XC*num_fe_c)) /(den_fe^2) + ...
                (diff_den_fs*(-XB-XC))/ (den_fs^2) ) );
         
-% 5. Derivee de theta double dot par rapport a theta
+% 10. Derivee de theta double dot par rapport a theta
 theta2dot_theta = (XB/Jy)*(...
                ((diff_den_fe*(-YB*num_fe_b - XC*num_fe_c)) /(den_fe^2)+ ...
                (diff_den_fs*(YB+YC))/ (den_fs^2) ) );
