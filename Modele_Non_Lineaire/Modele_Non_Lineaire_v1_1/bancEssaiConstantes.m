@@ -88,17 +88,17 @@ RC =  RR;
 LC =  LL;
 
 %% Constantes des Fk
-ae0 = 1;
-ae1 = 1;
-ae2 = 1;
-ae3 = 1;
+ae0 = 1.339300;
+ae1 = 3.57e+02;
+ae2 = 50.13;
+ae3 = 7.69e+05;
 
-as0 = 1;
-as1 = 1;
-as2 = 1;
-as3 = 1;
+as0 = 0.0587;
+as1 = 22.606;
+as2 = 7.4466e+02;
+as3 = 2.458e+05;
 
-be1 = 1;
+be1 = 13.029359254409743;
 
 %% Position initiale z0
 z0 = 0;
