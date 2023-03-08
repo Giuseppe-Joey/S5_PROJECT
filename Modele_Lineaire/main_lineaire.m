@@ -25,9 +25,9 @@ tfin = 50;
 constantes_lineaire % call le fichier des constantes
 
 %% Vecteurs de tensions simulées
-VA = [t_des, -5*ones(length(t_des), 1)];
-VB = [t_des, -5*ones(length(t_des), 1)];
-VC = [t_des, -5*ones(length(t_des), 1)];
+VA = [t_des, 4.85*ones(length(t_des), 1)];
+VB = [t_des, 4.85*ones(length(t_des), 1)];
+VC = [t_des, 4.85*ones(length(t_des), 1)];
 
 %% Calcul des compensateurs
 %iniCTL_ver4    %Calculez vos compensateurs ici
@@ -36,7 +36,7 @@ VC = [t_des, -5*ones(length(t_des), 1)];
 % Constantes à l'équilibre 
 z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
 
-V_eq = -4.9999; % Chiffre arbitraire c'est À CALCULER PAR JOEY
+V_eq = -4.9026; % Chiffre arbitraire c'est À CALCULER PAR JOEY
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
 ic_eq = V_eq/RC;
@@ -49,13 +49,16 @@ den_fs = as0 + as1*z_eq + as2*z_eq^2 + as3*z_eq^3;
 diff_den_fs = as1 + 2*as2*z_eq + 3*as3*z_eq^2;
 
 num_fe_a = ia_eq*abs(ia_eq) + be1*ia_eq;
-diff_num_fe_a= (2*ia_eq^2 + be1*abs(ia_eq)) / abs(ia_eq);
+% diff_num_fe_a= (2*ia_eq^2 + be1*abs(ia_eq)) / abs(ia_eq);
+diff_num_fe_a= (2*abs(ia_eq) + be1);
 
 num_fe_b = ib_eq*abs(ib_eq) + be1*ib_eq;
-diff_num_fe_b = (2*ib_eq^2 + be1*abs(ib_eq)) / abs(ib_eq);
+% diff_num_fe_b = (2*ib_eq^2 + be1*abs(ib_eq)) / abs(ib_eq);
+diff_num_fe_b= (2*abs(ib_eq) + be1);
 
 num_fe_c = ic_eq*abs(ic_eq) + be1*ic_eq;
-diff_num_fe_c = (2*ic_eq^2 + be1*abs(ic_eq)) / abs(ic_eq);
+% diff_num_fe_c = (2*ic_eq^2 + be1*abs(ic_eq)) / abs(ic_eq);
+diff_num_fe_c= (2*abs(ic_eq) + be1);
 
 diff_fa_za = (-num_fe_a*diff_den_fe)/(den_fe^2) + diff_den_fs/(den_fs^2);
 diff_fb_zb = (-num_fe_b*diff_den_fe)/(den_fe^2) + diff_den_fs/(den_fs^2);
@@ -101,12 +104,12 @@ theta2dot_ib = (XB/Jy) * diff_fb_ib;
 theta2dot_z = (XA/Jy)*diff_fa_za + (XB/Jy)*diff_fb_zb + (XB/Jy)*diff_fc_zc;
 
 % 10. Derivee de theta double dot par rapport a phi
-theta2dot_phi = -(XA^2/Jy)*diff_fa_za - (XB^2/Jy)*diff_fb_zb ...
-                -(XC^2/Jy)*diff_fc_zc ;
+theta2dot_phi = -(XA*YA/Jy)*diff_fa_za - (XB*YB/Jy)*diff_fb_zb ...
+                -(XC*YC/Jy)*diff_fc_zc ;
 
 % 11. Derivee de theta double dot par rapport a theta
-theta2dot_theta =  (XA*YA/Jy)*diff_fa_za + (XB*YB/Jy)*diff_fb_zb...
-                  +(XC*YC/Jy)*diff_fc_zc;
+theta2dot_theta =  (XA^2/Jy)*diff_fa_za + (XB^2/Jy)*diff_fb_zb...
+                  +(XC^2/Jy)*diff_fc_zc;
               
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %          Dérivées partielles delta xs_dot_dot et ys_dot_dot             %
@@ -202,7 +205,7 @@ B = [zeros(3,3);
      zeros(2,3);
             CV];
         
-C = [    Tdef_T, zeros(3,3),  zeros(3,4), zeros(3,3);
+C = [    TDEF', zeros(3,3),  zeros(3,4), zeros(3,3);
      zeros(4,3), zeros(4,3),      eye(4), zeros(4,3)];
  
 D = zeros(7,3);

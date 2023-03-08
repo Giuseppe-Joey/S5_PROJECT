@@ -35,12 +35,12 @@ VC = [t_des, (ones(length(t_des), 1)*-2)];
 %iniCTL_ver4    %Calculez vos compensateurs ici
 
 %% Simulation
-open_system('modele_non_lineaire_schema')
-set_param('modele_non_lineaire_schema','AlgebraicLoopSolver','LineSearch')
-sim('modele_non_lineaire_schema')
+% open_system('modele_non_lineaire_schema')
+% set_param('modele_non_lineaire_schema','AlgebraicLoopSolver','LineSearch')
+% sim('modele_non_lineaire_schema')
 
-% open_system('modele_non_lineaire_banc_essai')
-% set_param('modele_non_lineaire_banc_essai','AlgebraicLoopSolver','LineSearch')
-% sim('modele_non_lineaire_banc_essai')
+open_system('modele_non_lineaire_banc_essai')
+set_param('modele_non_lineaire_banc_essai','AlgebraicLoopSolver','LineSearch')
+sim('modele_non_lineaire_banc_essai')
 %affichage
 %trajectoires
