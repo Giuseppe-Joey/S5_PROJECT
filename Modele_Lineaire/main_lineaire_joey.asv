@@ -110,13 +110,12 @@ aS3 = 2.458002097972035e+05;
 syms ik
 zk = 0.015;      %metres
 g = 9.81;        % m/s^2
-mtot = 0.4250;
-Fk = 0.015;
+mtot = 10; 
 
 Fk = (((ik*abs(ik)) + (be*ik)) / (aE0 + aE1*zk + aE2*(zk^2) + aE3*(zk^3))) - 1/(aS0 + aS1*zk + aS2*(zk^2) + aS3*(zk^3))
 
 
-S = solve( Fk , ik )
+%S = solve( Fk , ik )
 
 %Fk = -g*mtot/3;
 
