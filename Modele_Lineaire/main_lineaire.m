@@ -41,6 +41,10 @@ VC = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
 z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
 
 V_eq = -4.88592; % Calculé par Joey
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
 ic_eq = V_eq/RC;
@@ -124,10 +128,16 @@ theta2dot_phi = (XA*YA/Jy)*diff_fa_za + (XB*YB/Jy)*diff_fb_zb ...
                 +(XC*YC/Jy)*diff_fc_zc ;
 
 % 11. Derivee de theta double dot par rapport a theta
+<<<<<<< Updated upstream
 theta2dot_theta =  (XA^2/Jy)*diff_fa_za + (XB^2/Jy)*diff_fb_zb...
                   +(XC^2/Jy)*diff_fc_zc;
 
 
+=======
+
+theta2dot_theta =  -(XA^2/Jy)*diff_fa_za -(XB^2/Jy)*diff_fb_zb...
+                  -(XC^2/Jy)*diff_fc_zc;
+>>>>>>> Stashed changes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %          Dérivées partielles delta xs_dot_dot et ys_dot_dot             %
