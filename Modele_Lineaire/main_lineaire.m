@@ -36,7 +36,7 @@ VC = [t_des, 4.85*ones(length(t_des), 1)];
 % Constantes à l'équilibre 
 z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
 
-V_eq = -4.9026; % Chiffre arbitraire c'est À CALCULER PAR JOEY
+V_eq = 4.88592; % Calculé par Joey
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
 ic_eq = V_eq/RC;
