@@ -40,17 +40,16 @@ VC = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
 % Constantes à l'équilibre 
 z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
 
-
-
-
 V_eq = -4.88592; % Calculé par Joey
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
 ic_eq = V_eq/RC;
-% 
+
+
 % PC = [0, (-rABC*cosd(30)/Jx)*(2*abs(Ibeq) + be)/f2e, (rABC*cosd(30)/Jx)*(2*abs(Iceq) + be)/f2e;...
 % (rABC/Jy)*(2*abs(Iaeq) + be)/f2e, (-sind(30)*rABC/Jy)*(2*abs(Ibeq) + be)/f2e, (-sind(30)*rABC/Jy)*(2*abs(Iceq) + be)/f2e;...
 % -1/mtot*(2*abs(Iaeq) + be)/f2e, -1/mtot*(2*abs(Ibeq) + be)/f2e, -1/mtot*(2*abs(Iceq) + be)/f2e];
+
 
 % Parties utilisées souvents dans les dérivées partielles (À L'ÉQUILIBRE)
 den_fe = ae0 + ae1*z_eq + ae2*z_eq^2 + ae3*z_eq^3;
@@ -125,18 +124,11 @@ theta2dot_phi = (XA*YA/Jy)*diff_fa_za + (XB*YB/Jy)*diff_fb_zb ...
                 +(XC*YC/Jy)*diff_fc_zc ;
 
 % 11. Derivee de theta double dot par rapport a theta
-<<<<<<< Updated upstream
 theta2dot_theta =  (XA^2/Jy)*diff_fa_za + (XB^2/Jy)*diff_fb_zb...
                   +(XC^2/Jy)*diff_fc_zc;
-         
 
 
 
-=======
-theta2dot_theta =  -(XA^2/Jy)*diff_fa_za -(XB^2/Jy)*diff_fb_zb...
-                  -(XC^2/Jy)*diff_fc_zc;
-              
->>>>>>> Stashed changes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %          Dérivées partielles delta xs_dot_dot et ys_dot_dot             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -261,33 +253,36 @@ D = zeros(7,3);
 % ***************
 % FzABC = -FA-FB-FC
 % FzABC = -3Fk
-%
+% ***************
 % z_dbl_dot = FzABC/mtot + g
-% 0 = FzABC/mtot + g
-% FzABC = -g*mtot;
-% 
-% Fk = g*mtot/3;
+% 0 = FzABC/mtot + g         % on sait que z_dbl_dot = 0 a lequilibre
+% FzABC = -g * mtot;
+%
+% -3Fk = -g * mtot;
+% Fk = g * mtot / 3;
 % Fk = ((((ik*abs(ik)) + (be*ik)) / (aE0 + aE1*zk + aE2*(zk^2) + aE3*(zk^3))) - 1/(aS0 + aS1*zk + aS2*(zk^2) + aS3*(zk^3))) 
 % ***************
 
 syms ik
-zk = 0.015;      %metres
+zk = 0.015;      % metres
 g = 9.81;        % m/s^2
 mtot = 0.4250;
 
-equation = g*mtot/3 == ((((ik*abs(ik)) + (be1*ik)) / (ae0 + ae1*zk + ae2*(zk^2) + ae3*(zk^3))) - 1/(as0 + as1*zk + as2*(zk^2) + as3*(zk^3))) 
+
+equation = -g*mtot/3 == ((((ik*abs(ik)) + (be1*ik)) / (ae0 + ae1*zk + ae2*(zk^2) + ae3*(zk^3))) - 1/(as0 + as1*zk + as2*(zk^2) + as3*(zk^3))); 
 ik = double(solve(equation, ik))
 
 
-
+% Vk = LL*diff(ik) + RR*ik
+Vk =  RR*ik
 
 
 
 
 %% Simulation
-open_system('modele_lineaire')
-set_param('modele_lineaire','AlgebraicLoopSolver','LineSearch')
-sim('modele_lineaire')
+% open_system('modele_lineaire')
+% set_param('modele_lineaire','AlgebraicLoopSolver','LineSearch')
+% sim('modele_lineaire')
 
 % open_system('banc_essai_lineaire')
 % set_param('banc_essai_lineaire','AlgebraicLoopSolver','LineSearch')
