@@ -93,7 +93,11 @@ del_phi2dot_del_teta = 0;
 
 
 
+<<<<<<< Updated upstream
 %Coefficient de Lucas_dot
+=======
+%Coefficient de Frank
+>>>>>>> Stashed changes
 be = 13.029359254409743;
 % i1 = -1;
 % i2 = -2;
@@ -107,6 +111,7 @@ aS2 = 7.446649680957198e+02;
 aS3 = 2.458002097972035e+05;
 
 
+<<<<<<< Updated upstream
 
 
 
@@ -131,6 +136,19 @@ S = solve(Fk, ik)
 %S = double(solve( Fk , ik ))
 
 
+=======
+syms ik
+zk = 0.015;      %metres
+g = 9.81;        % m/s^2
+mtot = 10; 
+
+Fk = (((ik*abs(ik)) + (be*ik)) / (aE0 + aE1*zk + aE2*(zk^2) + aE3*(zk^3))) - 1/(aS0 + aS1*zk + aS2*(zk^2) + aS3*(zk^3))
+
+
+%S = solve( Fk , ik )
+
+%Fk = -g*mtot/3;
+>>>>>>> Stashed changes
 
 
 
