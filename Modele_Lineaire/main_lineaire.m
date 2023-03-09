@@ -18,7 +18,7 @@ z_eq = Pzeq;
 t_des     = [0:1:8]';
 x_des     = [t_des, [0 0 0.5 1  0 -1 0 1 0]'*0.0];
 y_des     = [t_des, [0 0 0 0 -1  0 1 0 0]'*0.0];
-z_des     = [t_des, [0 0 0 1  1  1 1 1 1]'*.015];
+z_des     = [t_des, [1 1 1 1  1  1 1 1 1]'*.015];
 tfin = 50;
 
 %% Initialisation constantes
@@ -40,7 +40,7 @@ VC = [t_des, -1.66*ones(length(t_des), 1)];
 % Constantes à l'équilibre 
 % z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
 
-% V_eq = -1.6701; % Calculé par Joey
+% V_eq = -3; % Calculé par Joey
 
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
@@ -158,12 +158,10 @@ z2dot_ic = (-1/mtot) * diff_fc_zc;
 z2dot_z = (-1/mtot) * (diff_fa_za + diff_fb_zb + diff_fc_zc);
 
 % 18. Derivee de z double dot par rapport a phi
-z2dot_phi = (-1/mtot) * (-XA*diff_fa_za - XB*diff_fb_zb - XC*diff_fc_zc);
+z2dot_phi = (-1/mtot) * (YA*diff_fa_za + YB*diff_fb_zb + YC*diff_fc_zc);
         
 % 19. Derivee de z double dot par rapport a theta
-z2dot_theta = (-1/mtot) * (YA*diff_fa_za + YB*diff_fb_zb + YC*diff_fc_zc);
-
-
+z2dot_theta = (-1/mtot) * (-XA*diff_fa_za  -XB*diff_fb_zb  -XC*diff_fc_zc);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -251,13 +249,13 @@ D = zeros(7,3);
 % C'est rendu dans le fichier de constantes
 
 %% Simulation
-open_system('schema_lineaire')
-set_param('schema_lineaire','AlgebraicLoopSolver','LineSearch')
-sim('schema_lineaire')
+% open_system('schema_lineaire')
+% set_param('schema_lineaire','AlgebraicLoopSolver','LineSearch')
+% sim('schema_lineaire')
 % 
-% open_system('banc_essai_lineaire')
-% set_param('banc_essai_lineaire','AlgebraicLoopSolver','LineSearch')
-% sim('banc_essai_lineaire')
+open_system('banc_essai_lineaire')
+set_param('banc_essai_lineaire','AlgebraicLoopSolver','LineSearch')
+sim('banc_essai_lineaire')
 
 % affichage
 % figure(1)
