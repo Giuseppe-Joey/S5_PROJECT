@@ -12,13 +12,13 @@ ySeq = 0.000;      % Position y de la sphère à l'équilibre en metres
 %% Point d'opération choisi pour la plaque
 Axeq = 0;               %en degres
 Ayeq = 0;               %en degres
-Pzeq = .015;            %en metres
-z_eq = Pzeq;
+z_eq = .015;            %en metres
+
 %% Exemple de trajectoire
 t_des     = [0:1:8]';
 x_des     = [t_des, [0 0 0.5 1  0 -1 0 1 0]'*0.0];
 y_des     = [t_des, [0 0 0 0 -1  0 1 0 0]'*0.0];
-z_des     = [t_des, [1 1 1 1  1  1 1 1 1]'*.015];
+z_des     = [t_des, [1 1 1 1  1  1 1 1 1]'*z_eq];
 tfin = 50;
 
 %% Initialisation constantes
@@ -34,9 +34,8 @@ VC = [t_des, -1.66*ones(length(t_des), 1)];
 
 %% Linéarisation
 % Constantes à l'équilibre 
-z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
+% V_eq = -1.6701; % Chiffre arbitraire c'est À CALCULER PAR JOEY
 
-V_eq = -1.6701; % Chiffre arbitraire c'est À CALCULER PAR JOEY
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
 ic_eq = V_eq/RC;
@@ -258,7 +257,6 @@ B_plaque = [zeros(3,3);
         
 C_plaque = [Tdef_T*Tdef_T, zeros(3,3), zeros(3,3)]
 
- 
 D_plaque = zeros(3,3);    
 
 % Matrices des sous-système de la plaque
@@ -344,13 +342,13 @@ C_y = [C_sphere(2,2), C_sphere(2,4);
 D_y = [ 0;  0];
 
 %% Simulation
-open_system('modele_lineaire_dec')
-set_param('modele_lineaire_dec','AlgebraicLoopSolver','LineSearch')
-sim('modele_lineaire_dec')
+% open_system('modele_lineaire_dec')
+% set_param('modele_lineaire_dec','AlgebraicLoopSolver','LineSearch')
+% sim('modele_lineaire_dec')
 
-% open_system('banc_essai_lineaire')
-% set_param('banc_essai_lineaire','AlgebraicLoopSolver','LineSearch')
-% sim('banc_essai_lineaire')
+open_system('banc_essai_dec')
+set_param('banc_essai_dec','AlgebraicLoopSolver','LineSearch')
+sim('banc_essai_dec')
 %affichage
 %trajectoires
 
