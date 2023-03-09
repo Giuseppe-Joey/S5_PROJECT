@@ -114,5 +114,32 @@ as2 = 7.446649680957198e+02;
 as3 = 2.458002097972035e+05;
 
 
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         Calcul pour Fk, ik, Vk                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% ***********************
+% FzABC = -FA-FB-FC
+% FzABC = -3Fk
+% ***********************
+% z_dbl_dot = FzABC/mtot + g
+% 0 = FzABC/mtot + g            % on sait que z_dbl_dot = 0 a lequilibre
+% FzABC = -g * mtot;
+% ***********************
+% -3Fk = -g * mtot;
+% Fk = g * mtot / 3;
+% Fk = ((((ik*abs(ik)) + (be*ik)) / (aE0 + aE1*zk + aE2*(zk^2) + aE3*(zk^3))) - 1/(aS0 + aS1*zk + aS2*(zk^2) + aS3*(zk^3))) 
+% ***********************
+
+
+syms ik
+zk = z_eq;      % metres
+% g = 9.81;        % m/s^2
+% mtot = 0.4250;
+
+equation = -g*mtot/3 == ((((ik*abs(ik)) + (be1*ik)) / (ae0 + ae1*zk + ae2*(zk^2) + ae3*(zk^3))) - 1/(as0 + as1*zk + as2*(zk^2) + as3*(zk^3))); 
+ik = double(solve(equation, ik));
+
+% Vk = LL*diff(ik) + RR*ik
+V_eq =  RR*ik;
 

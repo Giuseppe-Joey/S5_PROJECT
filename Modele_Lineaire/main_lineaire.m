@@ -13,7 +13,7 @@ ySeq = 0.000;      % Position y de la sphère à l'équilibre en metres
 Axeq = 0;               %en degres
 Ayeq = 0;               %en degres
 Pzeq = .015;            %en metres
-
+z_eq = Pzeq;
 %% Exemple de trajectoire
 t_des     = [0:1:8]';
 x_des     = [t_des, [0 0 0.5 1  0 -1 0 1 0]'*0.0];
@@ -25,26 +25,23 @@ tfin = 50;
 constantes_lineaire % call le fichier des constantes
 
 %% Vecteurs de tensions simulées
-VA = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
-VB = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
-VC = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
+% VA = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
+% VB = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
+% VC = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
 
-% VA = [t_des, -1.67*ones(length(t_des), 1)];
-% VB = [t_des, -1.67*ones(length(t_des), 1)];
-% VC = [t_des, -1.67*ones(length(t_des), 1)];
+VA = [t_des, -1.66*ones(length(t_des), 1)];
+VB = [t_des, -1.66*ones(length(t_des), 1)];
+VC = [t_des, -1.66*ones(length(t_des), 1)];
 
 %% Calcul des compensateurs
 %iniCTL_ver4    %Calculez vos compensateurs ici
 
 %% Linéarisation
 % Constantes à l'équilibre 
-z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
+% z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
 
-V_eq = -4.88592; % Calculé par Joey
-<<<<<<< Updated upstream
-=======
+% V_eq = -1.6701; % Calculé par Joey
 
->>>>>>> Stashed changes
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
 ic_eq = V_eq/RC;
@@ -128,16 +125,10 @@ theta2dot_phi = (XA*YA/Jy)*diff_fa_za + (XB*YB/Jy)*diff_fb_zb ...
                 +(XC*YC/Jy)*diff_fc_zc ;
 
 % 11. Derivee de theta double dot par rapport a theta
-<<<<<<< Updated upstream
-theta2dot_theta =  (XA^2/Jy)*diff_fa_za + (XB^2/Jy)*diff_fb_zb...
-                  +(XC^2/Jy)*diff_fc_zc;
-
-
-=======
 
 theta2dot_theta =  -(XA^2/Jy)*diff_fa_za -(XB^2/Jy)*diff_fb_zb...
                   -(XC^2/Jy)*diff_fc_zc;
->>>>>>> Stashed changes
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %          Dérivées partielles delta xs_dot_dot et ys_dot_dot             %
@@ -257,41 +248,13 @@ D = zeros(7,3);
 %                         Calcul pour Fk, ik, Vk                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% ***********************
-% FzABC = -FA-FB-FC
-% FzABC = -3Fk
-% ***********************
-% z_dbl_dot = FzABC/mtot + g
-% 0 = FzABC/mtot + g            % on sait que z_dbl_dot = 0 a lequilibre
-% FzABC = -g * mtot;
-% ***********************
-% -3Fk = -g * mtot;
-% Fk = g * mtot / 3;
-% Fk = ((((ik*abs(ik)) + (be*ik)) / (aE0 + aE1*zk + aE2*(zk^2) + aE3*(zk^3))) - 1/(aS0 + aS1*zk + aS2*(zk^2) + aS3*(zk^3))) 
-% ***********************
-
-
-syms ik
-zk = 0.015;      % metres
-g = 9.81;        % m/s^2
-mtot = 0.4250;
-
-equation = -g*mtot/3 == ((((ik*abs(ik)) + (be1*ik)) / (ae0 + ae1*zk + ae2*(zk^2) + ae3*(zk^3))) - 1/(as0 + as1*zk + as2*(zk^2) + as3*(zk^3))); 
-ik = double(solve(equation, ik))
-
-% Vk = LL*diff(ik) + RR*ik
-Vk =  RR*ik
-
-
-
-
-
+% C'est rendu dans le fichier de constantes
 
 %% Simulation
-% open_system('modele_lineaire')
-% set_param('modele_lineaire','AlgebraicLoopSolver','LineSearch')
-% sim('modele_lineaire')
-
+open_system('schema_lineaire')
+set_param('schema_lineaire','AlgebraicLoopSolver','LineSearch')
+sim('schema_lineaire')
+% 
 % open_system('banc_essai_lineaire')
 % set_param('banc_essai_lineaire','AlgebraicLoopSolver','LineSearch')
 % sim('banc_essai_lineaire')
