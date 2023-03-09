@@ -40,23 +40,16 @@ VC = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
 % Constantes à l'équilibre 
 z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
 
-<<<<<<< Updated upstream
-V_eq = 4.88592; % Calculé par Joey
-=======
-<<<<<<< HEAD
-V_eq = -1.36; % Chiffre arbitraire c'est À CALCULER PAR JOEY
-
-=======
-V_eq = 4.88592; % Calculé par Joey
->>>>>>> 4685063daa89573201e97d829c0ba12920d0ea20
->>>>>>> Stashed changes
+V_eq = -4.88592; % Calculé par Joey
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
 ic_eq = V_eq/RC;
-% 
+
+
 % PC = [0, (-rABC*cosd(30)/Jx)*(2*abs(Ibeq) + be)/f2e, (rABC*cosd(30)/Jx)*(2*abs(Iceq) + be)/f2e;...
 % (rABC/Jy)*(2*abs(Iaeq) + be)/f2e, (-sind(30)*rABC/Jy)*(2*abs(Ibeq) + be)/f2e, (-sind(30)*rABC/Jy)*(2*abs(Iceq) + be)/f2e;...
 % -1/mtot*(2*abs(Iaeq) + be)/f2e, -1/mtot*(2*abs(Ibeq) + be)/f2e, -1/mtot*(2*abs(Iceq) + be)/f2e];
+
 
 % Parties utilisées souvents dans les dérivées partielles (À L'ÉQUILIBRE)
 den_fe = ae0 + ae1*z_eq + ae2*z_eq^2 + ae3*z_eq^3;
@@ -131,18 +124,11 @@ theta2dot_phi = (XA*YA/Jy)*diff_fa_za + (XB*YB/Jy)*diff_fb_zb ...
                 +(XC*YC/Jy)*diff_fc_zc ;
 
 % 11. Derivee de theta double dot par rapport a theta
-<<<<<<< Updated upstream
 theta2dot_theta =  (XA^2/Jy)*diff_fa_za + (XB^2/Jy)*diff_fb_zb...
                   +(XC^2/Jy)*diff_fc_zc;
-         
 
 
 
-=======
-theta2dot_theta =  -(XA^2/Jy)*diff_fa_za -(XB^2/Jy)*diff_fb_zb...
-                  -(XC^2/Jy)*diff_fc_zc;
-              
->>>>>>> Stashed changes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %          Dérivées partielles delta xs_dot_dot et ys_dot_dot             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

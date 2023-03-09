@@ -18,16 +18,20 @@ Pzeq = .015;            %en metres
 t_des     = [0:1:8]';
 x_des     = [t_des, [0 0 0.5 1  0 -1 0 1 0]'*0.0];
 y_des     = [t_des, [0 0 0 0 -1  0 1 0 0]'*0.0];
-z_des     = [t_des, [1 1 1 1  1  1 1 1 1]'*.015];
+z_des     = [t_des, [0 0 0 1  1  1 1 1 1]'*.015];
 tfin = 50;
 
 %% Initialisation constantes
 constantes_lineaire % call le fichier des constantes
 
 %% Vecteurs de tensions simulées
-VA = [t_des, 4.85*ones(length(t_des), 1)];
-VB = [t_des, 4.85*ones(length(t_des), 1)];
-VC = [t_des, 4.85*ones(length(t_des), 1)];
+VA = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
+VB = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
+VC = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
+
+% VA = [t_des, -1.67*ones(length(t_des), 1)];
+% VB = [t_des, -1.67*ones(length(t_des), 1)];
+% VC = [t_des, -1.67*ones(length(t_des), 1)];
 
 %% Calcul des compensateurs
 %iniCTL_ver4    %Calculez vos compensateurs ici
@@ -36,10 +40,17 @@ VC = [t_des, 4.85*ones(length(t_des), 1)];
 % Constantes à l'équilibre 
 z_eq = Pzeq;       %Pzeq est une variable globale declaree plus haut
 
-V_eq = 4.88592; % Calculé par Joey
+
+
+
+V_eq = -4.88592; % Calculé par Joey
 ia_eq = V_eq/RA;
 ib_eq = V_eq/RB;
 ic_eq = V_eq/RC;
+% 
+% PC = [0, (-rABC*cosd(30)/Jx)*(2*abs(Ibeq) + be)/f2e, (rABC*cosd(30)/Jx)*(2*abs(Iceq) + be)/f2e;...
+% (rABC/Jy)*(2*abs(Iaeq) + be)/f2e, (-sind(30)*rABC/Jy)*(2*abs(Ibeq) + be)/f2e, (-sind(30)*rABC/Jy)*(2*abs(Iceq) + be)/f2e;...
+% -1/mtot*(2*abs(Iaeq) + be)/f2e, -1/mtot*(2*abs(Ibeq) + be)/f2e, -1/mtot*(2*abs(Iceq) + be)/f2e];
 
 % Parties utilisées souvents dans les dérivées partielles (À L'ÉQUILIBRE)
 den_fe = ae0 + ae1*z_eq + ae2*z_eq^2 + ae3*z_eq^3;
@@ -68,6 +79,9 @@ diff_fa_ia = diff_num_fe_a / den_fe;
 diff_fb_ib = diff_num_fe_b / den_fe;
 diff_fc_ic = diff_num_fe_c / den_fe;
 
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                  Dérivées partielles delta phi_dot_dot                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,6 +101,9 @@ phi2dot_phi = (YB/Jx)*(diff_fc_zc*YC - diff_fb_zb*YB);
 % 5. Derivee de phi double dot par rapport a theta
 phi2dot_theta = (YB/Jx)*(diff_fb_zb*XB - diff_fc_zc*XC);
 
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                Dérivées partielles delta theta_dot_dot                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -104,13 +121,22 @@ theta2dot_ib = (XB/Jy) * diff_fb_ib;
 theta2dot_z = (XA/Jy)*diff_fa_za + (XB/Jy)*diff_fb_zb + (XB/Jy)*diff_fc_zc;
 
 % 10. Derivee de theta double dot par rapport a phi
-theta2dot_phi = -(XA*YA/Jy)*diff_fa_za - (XB*YB/Jy)*diff_fb_zb ...
-                -(XC*YC/Jy)*diff_fc_zc ;
+theta2dot_phi = (XA*YA/Jy)*diff_fa_za + (XB*YB/Jy)*diff_fb_zb ...
+                +(XC*YC/Jy)*diff_fc_zc ;
 
 % 11. Derivee de theta double dot par rapport a theta
+<<<<<<< Updated upstream
 theta2dot_theta =  (XA^2/Jy)*diff_fa_za + (XB^2/Jy)*diff_fb_zb...
                   +(XC^2/Jy)*diff_fc_zc;
+         
+
+
+
+=======
+theta2dot_theta =  -(XA^2/Jy)*diff_fa_za -(XB^2/Jy)*diff_fb_zb...
+                  -(XC^2/Jy)*diff_fc_zc;
               
+>>>>>>> Stashed changes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %          Dérivées partielles delta xs_dot_dot et ys_dot_dot             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -119,6 +145,9 @@ xs2dot_theta = -mSg/mSeff;
 
 % 13. Constante devant delta phi pour delta ys_dot_dot
 ys2dot_phi = mSg/mSeff;
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                  Dérivées partielles delta z_dot_dot                    %
@@ -141,6 +170,9 @@ z2dot_phi = (-1/mtot) * (-XA*diff_fa_za - XB*diff_fb_zb - XC*diff_fc_zc);
 % 19. Derivee de z double dot par rapport a theta
 z2dot_theta = (-1/mtot) * (YA*diff_fa_za + YB*diff_fb_zb + YC*diff_fc_zc);
 
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                          Constantes delta i_dot                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -161,6 +193,9 @@ idot_Vb = 1/LB;
 
 % 25. Constante devant delta Vc pour i_dot_c
 idot_Vc = 1/LC;
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                            MATRICES D'ÉTATS                             %
@@ -219,29 +254,9 @@ D = zeros(7,3);
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                         Calcul pour Fk, ik, Vk                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%Coefficient de Lucas_dot
-be = 13.029359254409743;
-% i1 = -1;
-% i2 = -2;
-aE0 = 1.339300773473042;
-aE1 = 3.570527671215823e+02;
-aE2 = 50.139588333666325;
-aE3 = 7.694247721681595e+05;
-aS0 = 0.058705851628389;
-aS1 = 22.606122743582090;
-aS2 = 7.446649680957198e+02;
-aS3 = 2.458002097972035e+05;
-
-
-
-syms ik
-zk = 0.015;      %metres
-g = 9.81;        % m/s^2
-mtot = 0.4250;
 
 % ***************
 % FzABC = -FA-FB-FC
@@ -255,8 +270,16 @@ mtot = 0.4250;
 % Fk = ((((ik*abs(ik)) + (be*ik)) / (aE0 + aE1*zk + aE2*(zk^2) + aE3*(zk^3))) - 1/(aS0 + aS1*zk + aS2*(zk^2) + aS3*(zk^3))) 
 % ***************
 
-equation = g*mtot/3 == ((((ik*abs(ik)) + (be*ik)) / (aE0 + aE1*zk + aE2*(zk^2) + aE3*(zk^3))) - 1/(aS0 + aS1*zk + aS2*(zk^2) + aS3*(zk^3))) 
+syms ik
+zk = 0.015;      %metres
+g = 9.81;        % m/s^2
+mtot = 0.4250;
+
+equation = g*mtot/3 == ((((ik*abs(ik)) + (be1*ik)) / (ae0 + ae1*zk + ae2*(zk^2) + ae3*(zk^3))) - 1/(as0 + as1*zk + as2*(zk^2) + as3*(zk^3))) 
 ik = double(solve(equation, ik))
+
+
+
 
 
 
@@ -269,7 +292,11 @@ sim('modele_lineaire')
 % open_system('banc_essai_lineaire')
 % set_param('banc_essai_lineaire','AlgebraicLoopSolver','LineSearch')
 % sim('banc_essai_lineaire')
-%affichage
+
+% affichage
+% figure(1)
+% plot(ans.tsim(:,1), ans.y_lineaire(:,3))
+% axis([0 50 0 0.03])
 %trajectoires
 
 
