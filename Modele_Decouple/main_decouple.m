@@ -23,29 +23,26 @@ tfin = 50;
 
 %% Initialisation constantes
 constantes % call le fichier des constantes
-linearisation % call le fichier des matrices d'états linéaires
+linearisation % call le fichier de linearisation
+decouplage % call le fichier de decouplage
+
 %% Vecteurs de tensions simulées
-% VA = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
-% VB = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
-% VC = [t_des, [-1.67 -1.67 -1.67 -2  -2 -2 -1 -1 0]'];
-% 
+% VA = [t_des, -1.66*ones(length(t_des), 1)];
+% VB = [t_des, -1.66*ones(length(t_des), 1)];
+% VC = [t_des, -1.66*ones(length(t_des), 1)];
+
 %% Calcul des compensateurs
 %iniCTL_ver4    %Calculez vos compensateurs ici
 
-
 %% Simulation
-% open_system('schema_lineaire')
-% set_param('schema_lineaire','AlgebraicLoopSolver','LineSearch')
-% sim('schema_lineaire')
-% % 
-open_system('banc_essai_lineaire')
-set_param('banc_essai_lineaire','AlgebraicLoopSolver','LineSearch')
-sim('banc_essai_lineaire')
+% open_system('schema_decouple')
+% set_param('modele_lineaire_dec','AlgebraicLoopSolver','LineSearch')
+% sim('modele_lineaire_dec')
 
-% affichage
-% figure(1)
-% plot(ans.tsim(:,1), ans.y_lineaire(:,3))
-% axis([0 50 0 0.03])
+open_system('banc_essai_decouple')
+set_param('banc_essai_decouple','AlgebraicLoopSolver','LineSearch')
+sim('banc_essai_decouple')
+%affichage
 %trajectoires
 
 
